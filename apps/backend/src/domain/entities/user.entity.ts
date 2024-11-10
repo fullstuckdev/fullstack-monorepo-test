@@ -1,15 +1,5 @@
 import { UserDTO } from '../../interfaces/types/user.types';
-
-export interface UserProps {
-  id: string;
-  email: string | null;
-  displayName: string | null;
-  photoURL: string | null;
-  role: string;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
+import { User as SharedUser } from '@fullstack/shared-types';
 
 export class User {
   private readonly _id: string;
@@ -21,7 +11,7 @@ export class User {
   private _createdAt: string;
   private _updatedAt: string;
 
-  constructor(props: UserProps) {
+  constructor(props: SharedUser) {
     this._id = props.id;
     this._email = props.email;
     this._displayName = props.displayName;
@@ -61,7 +51,7 @@ export class User {
     this._updatedAt = new Date().toISOString();
   }
 
-  static create(props: Omit<UserProps, 'createdAt' | 'updatedAt'>): User {
+  static create(props: Omit<SharedUser, 'createdAt' | 'updatedAt'>): User {
     const now = new Date().toISOString();
     return new User({
       ...props,

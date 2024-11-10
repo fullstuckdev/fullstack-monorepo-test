@@ -3,6 +3,7 @@ export interface User {
     email: string | null;
     displayName: string | null;
     photoURL: string | null;
+    token?: string;
     role: string;
     isActive: boolean;
     createdAt: string;

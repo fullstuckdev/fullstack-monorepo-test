@@ -107,8 +107,8 @@ export const UserManagementTable = ({
                 <TableCell>
                   <Box display="flex" alignItems="center" gap={2}>
                     <Avatar
-                      src={user.photoURL}
-                      alt={user.displayName}
+                      src={user.photoURL ?? undefined}
+                      alt={user.displayName ?? ''}
                       sx={{ width: 40, height: 40 }}
                     />
                     <Typography>{user.displayName}</Typography>

@@ -1,11 +1,9 @@
-import type { User as DomainUser } from '@/domain/models/user';
-
-// Create a more flexible User type for UI components
-export interface UIUser extends Omit<DomainUser, 'photoURL'> {
+import type { User } from '@fullstack/shared-types';
+export interface UIUser extends Omit<User, 'photoURL'> {
   photoURL?: string;
 }
 
-export interface UserData extends UIUser {
+export interface UserData extends User {
   createdAt: string;
   updatedAt: string;
 }

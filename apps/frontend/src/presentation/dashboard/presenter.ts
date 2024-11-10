@@ -34,9 +34,13 @@ export class DashboardPresenter {
   async fetchUsers(): Promise<void> {
     this.updateViewModel({ loading: true });
     try {
-      const users = await this.userRepository.fetchUsers();
-      this.updateViewModel({ users });
-      this.showSnackbar('Users loaded successfully', 'success');
+      const users = await this.userRepository.getUsers();
+      this.updateViewModel({ 
+        users: users.map(user => ({
+          ...user,
+          photoURL: user.photoURL || '' 
+        }))
+      });      this.showSnackbar('Users loaded successfully', 'success');
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to fetch users';
       this.updateViewModel({ error: errorMessage });
@@ -51,7 +55,7 @@ export class DashboardPresenter {
       const updatedUser = await this.userRepository.updateUser(userId, userData);
       this.updateViewModel({
         users: this.state.viewModel.users.map(user => 
-          user.id === userId ? updatedUser : user
+          user.id === userId ? { ...updatedUser, photoURL: updatedUser.photoURL || '' } : user
         )
       });
       this.showSnackbar('User updated successfully', 'success');
@@ -69,7 +73,7 @@ export class DashboardPresenter {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
           unsubscribe();
           if (user) {
-            const userData = await this.userRepository.fetchUser(user.uid);
+            const userData = await this.userRepository.getUserById(user.uid);
             const token = await user.getIdToken(true);
             this.dispatch(setUser({ ...userData, token }));
             localStorage.setItem('token', token);

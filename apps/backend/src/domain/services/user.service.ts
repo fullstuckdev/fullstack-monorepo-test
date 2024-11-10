@@ -1,21 +1,12 @@
 import { FirebaseConfig } from '../../infrastructure/config/firebase.config';
+import { User } from '@fullstack/shared-types';
 
-interface UserData {
-  id: string;
-  email: string | null;
-  displayName?: string | null;
-  photoURL?: string | null;
-  role: string;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
 
 export class UserService {
   private firestore = FirebaseConfig.getInstance().getFirestore();
   private auth = FirebaseConfig.getInstance().getAuth();
 
-  private structureUserData(data: any): UserData {
+  private structureUserData(data: any): User {
     return {
       id: data.id,
       email: data.email || null,
@@ -28,7 +19,7 @@ export class UserService {
     };
   }
 
-  async fetchUserData(uid: string): Promise<UserData> {
+  async fetchUserData(uid: string): Promise<User> {
     try {
       console.log('Attempting to fetch user data for uid:', uid);
 
@@ -72,7 +63,7 @@ export class UserService {
     }
   }
 
-  async updateUserData(uid: string, updateData: Partial<UserData>): Promise<UserData> {
+  async updateUserData(uid: string, updateData: Partial<User>): Promise<User> {
     try {
       await this.auth.getUser(uid);
 
@@ -104,7 +95,7 @@ export class UserService {
     }
   }
 
-  async fetchAllUsers(): Promise<{ users: UserData[], total: number }> {
+  async fetchAllUsers(): Promise<{ users: User[], total: number }> {
     try {
       const usersSnapshot = await this.firestore
         .collection('users')

@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Card,
   Box,
   Typography,
   Avatar,
   IconButton,
-  Tooltip
-} from '@mui/material';
-import { Edit as EditIcon } from '@mui/icons-material';
-import { ProfileCardProps } from '../types';
-import { EditDialog } from '../EditDialog/EditDialog';
+  Tooltip,
+} from "@mui/material";
+import { Edit as EditIcon } from "@mui/icons-material";
+import { ProfileCardProps, UserData } from "../types";
+import { EditDialog } from "../EditDialog/EditDialog";
 
 export const ProfileCard = ({ user, onUpdateUser }: ProfileCardProps) => {
   const [openEditDialog, setOpenEditDialog] = useState(false);
@@ -20,28 +20,28 @@ export const ProfileCard = ({ user, onUpdateUser }: ProfileCardProps) => {
       sx={{
         mb: 4,
         borderRadius: 3,
-        backdropFilter: 'blur(10px)',
-        backgroundColor: 'rgba(255, 255, 255, 0.85)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-        border: '1px solid rgba(255, 255, 255, 0.3)',
+        backdropFilter: "blur(10px)",
+        backgroundColor: "rgba(255, 255, 255, 0.85)",
+        boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+        border: "1px solid rgba(255, 255, 255, 0.3)",
       }}
     >
       <Box
         sx={{
           p: 2,
-          borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
-          display: 'flex',
-          alignItems: 'center',
+          borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+          display: "flex",
+          alignItems: "center",
           gap: 1,
         }}
       >
-        <Typography 
+        <Typography
           variant="h6"
           sx={{
             fontWeight: 600,
-            color: '#1976D2',
-            display: 'flex',
-            alignItems: 'center',
+            color: "#1976D2",
+            display: "flex",
+            alignItems: "center",
             gap: 1,
           }}
         >
@@ -53,12 +53,12 @@ export const ProfileCard = ({ user, onUpdateUser }: ProfileCardProps) => {
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Box display="flex" alignItems="center" gap={3}>
             <Avatar
-              src={user.photoURL || undefined}
-              alt={user.displayName}
+              src={user.photoURL ?? undefined}
+              alt={user.displayName ?? ""}
               sx={{
                 width: 80,
                 height: 80,
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
               }}
             />
             <Box>
@@ -73,11 +73,12 @@ export const ProfileCard = ({ user, onUpdateUser }: ProfileCardProps) => {
                   sx={{
                     px: 2,
                     py: 0.5,
-                    borderRadius: '16px',
-                    display: 'inline-block',
-                    background: 'linear-gradient(45deg, #2196F3 30%, #4CAF50 90%)',
-                    color: 'white',
-                    fontSize: '0.875rem',
+                    borderRadius: "16px",
+                    display: "inline-block",
+                    background:
+                      "linear-gradient(45deg, #2196F3 30%, #4CAF50 90%)",
+                    color: "white",
+                    fontSize: "0.875rem",
                     fontWeight: 500,
                   }}
                 >
@@ -87,16 +88,20 @@ export const ProfileCard = ({ user, onUpdateUser }: ProfileCardProps) => {
                   sx={{
                     px: 2,
                     py: 0.5,
-                    borderRadius: '16px',
-                    backgroundColor: user.isActive ? 'rgba(76, 175, 80, 0.1)' : 'rgba(158, 158, 158, 0.1)',
-                    color: user.isActive ? '#2E7D32' : '#757575',
-                    fontSize: '0.875rem',
+                    borderRadius: "16px",
+                    backgroundColor: user.isActive
+                      ? "rgba(76, 175, 80, 0.1)"
+                      : "rgba(158, 158, 158, 0.1)",
+                    color: user.isActive ? "#2E7D32" : "#757575",
+                    fontSize: "0.875rem",
                     fontWeight: 500,
-                    border: '1px solid',
-                    borderColor: user.isActive ? 'rgba(76, 175, 80, 0.3)' : 'rgba(158, 158, 158, 0.3)',
+                    border: "1px solid",
+                    borderColor: user.isActive
+                      ? "rgba(76, 175, 80, 0.3)"
+                      : "rgba(158, 158, 158, 0.3)",
                   }}
                 >
-                  {user.isActive ? 'Active' : 'Inactive'}
+                  {user.isActive ? "Active" : "Inactive"}
                 </Typography>
               </Box>
             </Box>
@@ -105,9 +110,9 @@ export const ProfileCard = ({ user, onUpdateUser }: ProfileCardProps) => {
             <IconButton
               onClick={() => setOpenEditDialog(true)}
               sx={{
-                color: '#2196F3',
-                '&:hover': {
-                  backgroundColor: 'rgba(33,150,243,0.1)',
+                color: "#2196F3",
+                "&:hover": {
+                  backgroundColor: "rgba(33,150,243,0.1)",
                 },
               }}
             >
@@ -116,13 +121,22 @@ export const ProfileCard = ({ user, onUpdateUser }: ProfileCardProps) => {
           </Tooltip>
         </Box>
       </Box>
-
       <EditDialog
         open={openEditDialog}
-        user={user}
+        user={{
+          ...user,
+          photoURL: user.photoURL ?? null, 
+        }}
         onClose={() => setOpenEditDialog(false)}
-        onSave={onUpdateUser}
+        onSave={async (userData) => {
+          const sanitizedData = {
+            ...userData,
+            photoURL: userData.photoURL || undefined,
+          };
+          await onUpdateUser(sanitizedData);
+        }}
+        // ... existing code ...
       />
     </Card>
   );
-}; 
+};

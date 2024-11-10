@@ -179,7 +179,8 @@ export default function DashboardPage() {
       if (currentUser) {
         dispatch(setUser({
           ...currentUser,
-          ...userData
+          ...userData,
+          photoURL: userData.photoURL || undefined
         }));
       }
     } catch (error) {
