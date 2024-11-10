@@ -1,0 +1,51 @@
+{
+  "name": "backend-repo",
+  "main": "./dist/index.js",
+  "dependencies": {
+    "@types/reflect-metadata": "^0.1.0",
+    "axios": "^1.7.7",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "dotenv": "^16.4.5",
+    "envalid": "^8.0.0",
+    "express-rate-limit": "^7.4.1",
+    "firebase-admin": "^12.7.0",
+    "firebase-functions": "^6.1.0",
+    "firebase-tools": "^13.24.2",
+    "helmet": "^8.0.0",
+    "inversify": "^6.1.1",
+    "reflect-metadata": "^0.2.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^11.0.2",
+    "winston": "^3.16.0",
+    "@fullstack/shared-types": "*"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^9.2.0",
+    "@types/faker": "^6.6.11",
+    "@types/node": "^22.9.0",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.7",
+    "faker": "^6.6.6",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3",
+    "concurrently": "^8.2.2"
+  },
+  "scripts": {
+    "emulator": "firebase emulators:start --only functions",
+    "dev": "npm run build && concurrently \"npm run build:watch\" \"npm run emulator\"",
+    "build": "tsc && cp .env dist/.env",
+    "build:watch": "tsc --watch",
+    "start": "node dist/app.js",
+    "seed": "ts-node src/scripts/seed.ts",
+    "seed:clear": "ts-node src/scripts/seed.ts --clear",
+    "lint": "eslint . --ext .ts",
+    "test": "jest",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "generate-test-token": "ts-node src/scripts/generate-test-token.ts",
+    "check-creds": "ts-node src/scripts/check-firebase-credentials.ts",
+    "validate-env": "ts-node src/scripts/validate-env.ts"
+  }
+}

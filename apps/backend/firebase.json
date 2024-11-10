@@ -1,0 +1,26 @@
+{
+  "functions": {
+    "source": ".",
+    "runtime": "nodejs20",
+    "predeploy": [
+      "npm --prefix \"$RESOURCE_DIR\" run build"
+    ],
+    "codebase": "default"
+  },
+  "emulators": {
+    "functions": {
+      "port": 5001,
+      "env_file": "./dist/.env"
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "auth": {
+      "port": 9099
+    },
+    "ui": {
+      "enabled": true,
+      "port": 4000
+    }
+  }
+} 
