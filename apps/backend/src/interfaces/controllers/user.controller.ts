@@ -6,6 +6,7 @@ import { AuthMiddleware } from '../middleware/auth.middleware';
 import { validateDto } from '../../infrastructure/middleware/validation.middleware';
 import { UpdateUserDto } from '../../application/dtos/user.dto';
 import { BaseController } from '../../interfaces/controllers/base.controller';
+import { ApiResponse, User} from '@fullstack/shared-types';
 
 export class UserController extends BaseController {
   constructor(
@@ -20,18 +21,23 @@ export class UserController extends BaseController {
     try {
       const userId = req.params.id;
       const updatedUser = await this.updateUserUseCase.execute(userId, req.body);
-
-      return res.status(200).json({
+  
+      const response: ApiResponse<User> = {
         success: true,
         message: 'User data updated successfully',
         data: updatedUser.toJSON()
-      });
+      };
+  
+      return res.status(200).json(response);
     } catch (error) {
-      return res.status(500).json({
+      const errorResponse: ApiResponse<null> = {
         success: false,
-        error: 'Failed to update user data',
-        details: (error as Error).message
-      });
+        error: {
+          code: 'UPDATE_FAILED',
+          message: 'Failed to update user data'
+        }
+      };
+      return res.status(500).json(errorResponse);
     }
   }
 
