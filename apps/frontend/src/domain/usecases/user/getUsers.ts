@@ -1,6 +1,6 @@
 import { injectable, inject } from 'inversify';
 import type { UserRepository } from '@/domain/repositories/userRepository';
-import type { UserData } from '@/types';
+import type { User as UserData } from '@fullstack/shared-types';
 import { TYPES } from '@/ioc/types';
 
 @injectable()
@@ -10,6 +10,10 @@ export class GetUsersUseCase {
   ) {}
 
   async execute(): Promise<UserData[]> {
-    return this.userRepository.getUsersExceptCurrent();
+    const users = await this.userRepository.getUsersExceptCurrent();
+    return users.map(user => ({
+      ...user,
+      photoURL: user.photoURL ?? null,
+    }));
   }
-} 
+}

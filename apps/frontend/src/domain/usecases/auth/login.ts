@@ -1,7 +1,7 @@
 import { injectable, inject } from 'inversify';
 import type { AuthService } from '@/domain/services/authService';
 import type { UserRepository } from '@/domain/repositories/userRepository';
-import type { User } from '@/types';
+import type { User } from '@fullstack/shared-types';
 import { TYPES } from '@/ioc/types';
 
 export interface LoginCredentials {
@@ -27,6 +27,7 @@ export class LoginUseCase {
     
     return {
       ...userData,
+      photoURL: userData.photoURL ?? null,
       token,
     };
   }

@@ -1,7 +1,7 @@
 import { injectable, inject } from 'inversify';
 import type { AuthService } from '@/domain/services/authService';
 import type { UserRepository } from '@/domain/repositories/userRepository';
-import type { User } from '@/types';
+import type { User } from '@fullstack/shared-types';
 import { TYPES } from '@/ioc/types';
 
 export interface RegisterCredentials {
@@ -38,6 +38,7 @@ export class RegisterUseCase {
 
     return {
       ...user,
+      photoURL: user.photoURL ?? null,
       token,
     };
   }
