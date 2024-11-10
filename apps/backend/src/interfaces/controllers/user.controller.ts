@@ -6,7 +6,8 @@ import { AuthMiddleware } from '../middleware/auth.middleware';
 import { validateDto } from '../../infrastructure/middleware/validation.middleware';
 import { UpdateUserDto } from '../../application/dtos/user.dto';
 import { BaseController } from '../../interfaces/controllers/base.controller';
-import { ApiResponse, User} from '@fullstack/shared-types';
+import { User } from '@fullstack/shared-types';
+import { ApiResponse } from '../../utils/response-handler';
 
 export class UserController extends BaseController {
   constructor(
