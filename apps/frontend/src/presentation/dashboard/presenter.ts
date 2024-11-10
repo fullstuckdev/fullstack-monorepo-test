@@ -3,8 +3,8 @@ import { DashboardPresenterState, DashboardViewModel } from './models';
 import { setUser } from '@/dataStore/auth/slice';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
-import { auth } from '@/data/firebase';
-import { User } from '@/domain/models/user';
+import { auth } from '@/config/firebase';
+import type { User } from '@/types';
 
 export class DashboardPresenter {
   constructor(
@@ -35,12 +35,8 @@ export class DashboardPresenter {
     this.updateViewModel({ loading: true });
     try {
       const users = await this.userRepository.getUsers();
-      this.updateViewModel({ 
-        users: users.map(user => ({
-          ...user,
-          photoURL: user.photoURL || '' 
-        }))
-      });      this.showSnackbar('Users loaded successfully', 'success');
+      this.updateViewModel({ users });
+      this.showSnackbar('Users loaded successfully', 'success');
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to fetch users';
       this.updateViewModel({ error: errorMessage });
@@ -50,12 +46,12 @@ export class DashboardPresenter {
     }
   }
 
-  async updateUser(userId: string, userData: Partial<User>): Promise<void> {
+  async updateUser(userId: string, userData: Omit<Partial<User>, 'photoURL'> & { photoURL?: string }): Promise<void> {
     try {
       const updatedUser = await this.userRepository.updateUser(userId, userData);
       this.updateViewModel({
         users: this.state.viewModel.users.map(user => 
-          user.id === userId ? { ...updatedUser, photoURL: updatedUser.photoURL || '' } : user
+          user.id === userId ? updatedUser : user
         )
       });
       this.showSnackbar('User updated successfully', 'success');
@@ -75,7 +71,7 @@ export class DashboardPresenter {
           if (user) {
             const userData = await this.userRepository.getUserById(user.uid);
             const token = await user.getIdToken(true);
-            this.dispatch(setUser({ ...userData, token }));
+            this.dispatch(setUser({ ...userData, photoURL: userData.photoURL ?? undefined, token }));
             localStorage.setItem('token', token);
           }
           resolve();
