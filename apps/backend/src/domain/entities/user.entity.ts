@@ -1,4 +1,3 @@
-import { UserDTO } from '../../interfaces/types/user.types';
 import { User as SharedUser } from '@fullstack/shared-types';
 
 export class User {
@@ -60,7 +59,7 @@ export class User {
     });
   }
 
-  toJSON(): UserDTO {
+  toJSON(): SharedUser {
     return {
       id: this._id,
       email: this._email,

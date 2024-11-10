@@ -1,6 +1,6 @@
 import { User } from '../../domain/entities/user.entity';
 import { SwaggerResponse } from '../types/swagger.types';
-import { UserDTO } from '../types/user.types';
+import { User as UserDTO } from '@fullstack/shared-types';
 
 export class UserPresenter {
   toResponse(user: User): SwaggerResponse<UserDTO> {

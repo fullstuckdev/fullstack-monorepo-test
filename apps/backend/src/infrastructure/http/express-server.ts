@@ -5,7 +5,6 @@ import { swaggerSpec } from '../config/swagger.config';
 import { requestIdMiddleware } from '../../infrastructure/middleware/request-id.middleware';
 import { setupSecurityMiddleware } from '../../infrastructure/middleware/security.middleware';
 import { createRateLimiter } from '../../infrastructure/middleware/rate-limit.middleware';
-import { v1Router } from '../../infrastructure/routes/v1/index';
 import { UpdateUserUseCase } from '../../application/use-cases/user/update-users.use-case';
 import { UserController } from '../../interfaces/controllers/user.controller';
 import { FirebaseUserRepository } from '../repositories/firebase-user.repository';

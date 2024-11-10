@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { FirebaseConfig } from '../../infrastructure/config/firebase.config';
 import { ApiError } from '../../utils/api-error';
 import { AuthenticatedRequest, AuthenticatedRequestHandler } from '../types/express.types';

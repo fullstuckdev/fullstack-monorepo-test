@@ -45,18 +45,23 @@ export class UserController extends BaseController {
   async fetchUsers(req: Request, res: Response) {
     try {
       const result = await this.fetchUsersUseCase.execute();
-      return res.status(200).json({
+      const response: ApiResponse<{ users: User[]; total: number }> = {
         success: true,
-        data: result.users,
-        total: result.total,
+        data: {
+          users: result.users,
+          total: result.total
+        },
         message: 'Users fetched successfully'
-      });
+      };
+      return res.status(200).json(response);
     } catch (error) {
-      return res.status(500).json({
+      const errorResponse: ApiResponse<null> = {
         success: false,
-        error: 'Failed to fetch users',
-        details: (error as Error).message
-      });
+        error: {
+          code: 'FETCH_FAILED',
+          message: 'Failed to fetch users',}
+      };
+      return res.status(500).json(errorResponse);
     }
   }
 } 

@@ -1,4 +1,3 @@
-import * as admin from "firebase-admin";
 import dotenv from "dotenv";
 
 export class EmulatorConfig {
