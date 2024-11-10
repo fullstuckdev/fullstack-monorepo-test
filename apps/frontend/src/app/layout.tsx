@@ -1,13 +1,12 @@
-'use client';
 
-import { Inter } from 'next/font/google';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { Provider } from 'react-redux';
-import { theme } from '@/theme';
-import { store } from '@/store';
+import type { Metadata } from 'next';
+import { Providers } from './providers';
+import '@/ui/styles/globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+export const metadata: Metadata = {
+  title: 'My App - Home',
+  description: 'Welcome to My App',
+};
 
 export default function RootLayout({
   children,
@@ -15,18 +14,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <title>Login</title>
-        <meta name="description" content="Login to your account" />
-      </head>
-      <body className={inter.className} suppressHydrationWarning>
-        <Provider store={store}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            {children}
-          </ThemeProvider>
-        </Provider>
+    <html lang="en">
+      <body suppressHydrationWarning>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
