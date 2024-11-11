@@ -1,8 +1,7 @@
 import winston from 'winston';
-import { environment } from '../../config/environment';
 
 export const logger = winston.createLogger({
-  level: environment.isEmulator ? 'debug' : 'info',
+  level: 'info',
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.json()

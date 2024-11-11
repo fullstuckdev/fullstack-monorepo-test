@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export function validateEnv() {
-  const isEmulator = process.env.IS_EMULATOR === "true";
+  const isEmulator = true
 
   const required = [
     "FB_PROJECT_ID",
@@ -11,7 +11,6 @@ export function validateEnv() {
     "FB_API_KEY",
   ];
 
-  console.log(process.env.IS_EMULATOR); // when i console.log it, it's undefined
 
   // If using emulator, we can use dummy values
   if (isEmulator) {
