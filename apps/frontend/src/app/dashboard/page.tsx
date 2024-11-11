@@ -8,7 +8,7 @@ import { container } from '@/ioc/container';
 import { TYPES } from '@/ioc/types';
 import type { DashboardViewModel } from '@/ui/viewmodels/DashboardViewModel';
 import type { RootState } from '@/dataStore/store';
-import type { User } from '@/domain/models/user';
+import type { User } from '@fullstack/shared-types';
 import { setUser } from '@/dataStore/auth/slice';
 import Head from 'next/head';
 import {
@@ -136,7 +136,11 @@ export default function DashboardPage() {
 
     setLoading(true);
     try {
-      await viewModel.updateUser(selectedUser.id, userData);
+      const sanitizedData = Object.fromEntries(
+        Object.entries(userData).map(([key, value]) => [key, value === null ? undefined : value])
+      );
+      
+      await viewModel.updateUser(selectedUser.id, sanitizedData);      
       setSnackbar({
         open: true,
         message: 'User updated successfully',
@@ -169,7 +173,11 @@ export default function DashboardPage() {
 
     setLoading(true);
     try {
-      await viewModel.updateUser(currentUser.id, userData);
+      const sanitizedData = Object.fromEntries(
+        Object.entries(userData).map(([key, value]) => [key, value === null ? undefined : value])
+      );
+      
+      await viewModel.updateUser(currentUser.id, sanitizedData);
       setSnackbar({
         open: true,
         message: 'Profile updated successfully',
