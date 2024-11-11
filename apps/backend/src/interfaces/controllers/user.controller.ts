@@ -6,8 +6,6 @@ import { AuthMiddleware } from '../middleware/auth.middleware';
 import { validateDto } from '../../infrastructure/middleware/validation.middleware';
 import { UpdateUserDto } from '../../application/dtos/user.dto';
 import { BaseController } from '../../interfaces/controllers/base.controller';
-import { User } from '@fullstack/shared-types';
-import { ApiResponse } from '../../utils/response-handler';
 
 export class UserController extends BaseController {
   constructor(
@@ -23,22 +21,19 @@ export class UserController extends BaseController {
       const userId = req.params.id;
       const updatedUser = await this.updateUserUseCase.execute(userId, req.body);
   
-      const response: ApiResponse<User> = {
+      return res.status(200).json({
         success: true,
         message: 'User data updated successfully',
         data: updatedUser.toJSON()
-      };
-  
-      return res.status(200).json(response);
+      });
     } catch (error) {
-      const errorResponse: ApiResponse<null> = {
+      return res.status(500).json({
         success: false,
         error: {
           code: 'UPDATE_FAILED',
           message: 'Failed to update user data'
         }
-      };
-      return res.status(500).json(errorResponse);
+      });
     }
   }
 
@@ -46,23 +41,22 @@ export class UserController extends BaseController {
   async fetchUsers(req: Request, res: Response) {
     try {
       const result = await this.fetchUsersUseCase.execute();
-      const response: ApiResponse<{ users: User[]; total: number }> = {
+      return res.status(200).json({
         success: true,
         data: {
           users: result.users,
           total: result.total
         },
         message: 'Users fetched successfully'
-      };
-      return res.status(200).json(response);
+      });
     } catch (error) {
-      const errorResponse: ApiResponse<null> = {
+      return res.status(500).json({
         success: false,
         error: {
           code: 'FETCH_FAILED',
-          message: 'Failed to fetch users',}
-      };
-      return res.status(500).json(errorResponse);
+          message: 'Failed to fetch users'
+        }
+      });
     }
   }
 } 
