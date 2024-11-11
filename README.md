@@ -10,9 +10,7 @@
 A modern, scalable full-stack application built with Next.js, Firebase, and Express, using a monorepo structure.
 
 [Getting Started](#-getting-started) •
-[Technologies](#-technologies) •
-[Documentation](#-documentation) •
-[Contributing](#-contributing)
+[Technologies](#-technologies) 
 
 </div>
 
@@ -82,17 +80,22 @@ Create `.env` files in both apps:
 
 **📱 Frontend (.env)**
 ```env
-NEXT_PUBLIC_FIREBASE_API_KEY=
+NEXT_PUBLIC_API_BASE_URL=http://localhost:5001
 NEXT_PUBLIC_FIREBASE_PROJECT_ID=
-NEXT_PUBLIC_API_BASE_URL=
+NEXT_PUBLIC_FIREBASE_PRIVATE_KEY=
+NEXT_PUBLIC_FIREBASE_API_KEY=
 ```
 
 **⚙️ Backend (.env)**
 ```env
+PROJECT_PORT=3000
 FB_PROJECT_ID=
 FB_PRIVATE_KEY=
 FB_CLIENT_EMAIL=
 FB_API_KEY=
+NODE_ENV=development
+AUTH_EMULATOR_HOST=localhost:9099
+EMULATOR_HOST=localhost:8080
 ```
 
 ### 4. Start development servers
