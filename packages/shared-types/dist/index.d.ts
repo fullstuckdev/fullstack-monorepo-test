@@ -9,4 +9,8 @@ export interface User {
     createdAt: string;
     updatedAt: string;
 }
+export interface UserData extends User {
+    createdAt: string;
+    updatedAt: string;
+}
 //# sourceMappingURL=index.d.ts.map

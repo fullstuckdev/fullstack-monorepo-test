@@ -1,6 +1,6 @@
 import { injectable, inject } from 'inversify';
 import type { UserRepository } from '@/domain/repositories/userRepository';
-import type { User as UserData } from '@fullstack/shared-types';
+import type { UserData } from '@fullstack/shared-types';
 import { TYPES } from '@/ioc/types';
 
 @injectable()

@@ -10,7 +10,6 @@ import { logger } from '@/core/logger';
 interface ApiResponse<T> {
   success: boolean;
   data: T;
-  total?: number;
   message: string;
 }
 
@@ -38,12 +37,12 @@ export class FirebaseUserRepository implements UserRepository {
         throw new Error(`Failed to fetch users: ${response.statusText}`);
       }
 
-      const result = await response.json() as ApiResponse<UserData[]>;
+      const result = await response.json() as ApiResponse<{ users: UserData[], total: number }>;
       if (!result.success) {
         throw new Error(result.message);
       }
 
-      return result.data;
+      return result.data.users;
     } catch (error) {
       logger.error('Failed to fetch users from API', { error });
       throw error;
@@ -61,12 +60,12 @@ export class FirebaseUserRepository implements UserRepository {
         throw new Error(`Failed to fetch users: ${response.statusText}`);
       }
       
-      const result = await response.json() as ApiResponse<UserData[]>;
+      const result = await response.json() as ApiResponse<{ users: UserData[], total: number }>;
       if (!result.success) {
         throw new Error(result.message);
       }
 
-      const user = result.data.find((u: UserData) => u.id === userId);
+      const user = result.data.users.find((u: UserData) => u.id === userId);
       if (!user) {
         throw new Error('User not found');
       }
@@ -89,19 +88,23 @@ export class FirebaseUserRepository implements UserRepository {
         throw new Error(`Failed to fetch users: ${response.statusText}`);
       }
       
-      const result = await response.json() as ApiResponse<UserData[]>;
+      const result = await response.json() as ApiResponse<{ users: UserData[], total: number }>;
       if (!result.success) {
         throw new Error(result.message);
       }
-
+  
+      if (!Array.isArray(result.data.users)) {
+        logger.error('API returned invalid data format', { data: result.data });
+        return [];
+      }
+  
       const currentUser = auth.currentUser;
-      return result.data.filter((user: UserData) => user.id !== currentUser?.uid);
+      return result.data.users.filter((user: UserData) => user.id !== currentUser?.uid);
     } catch (error) {
       logger.error('Failed to fetch users from API', { error });
       throw error;
     }
   }
-
   async updateUser(userId: string, userData: UpdateUserData): Promise<UserData> {
     try {
       const headers = await this.getAuthHeaders();
